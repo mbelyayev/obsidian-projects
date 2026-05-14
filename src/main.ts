@@ -24,6 +24,7 @@ import {
   type ViewId,
 } from "./settings/settings";
 import { ProjectsView, VIEW_TYPE_PROJECTS } from "./view";
+import { dataSource } from "./lib/stores/dataframe";
 
 dayjs.extend(isoWeek);
 dayjs.extend(localizedFormat);
@@ -136,7 +137,7 @@ export default class ProjectsPlugin extends Plugin {
       // checkCallback because we don't want to create notes if there are no
       // projects.
       checkCallback: (checking) => {
-        const project = get(settings).projects[0];
+        const project = get(dataSource)?.project || get(settings).projects.filter(p => p.isDefault)?.[0]
 
         if (project) {
           if (!checking) {
